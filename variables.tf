@@ -1,10 +1,12 @@
-variable "initials" {
-  description = "Enter your initials to include in URLs. Lowercase only!!!"
+
+
+variable "resourcegroup" {
+  description = "The Azure resource group you have been provided by your Contast Sales Engineer"
   default     = ""
 }
 
 variable "location" {
-  description = "The Azure location where all resources in this example should be created, to find your nearest run `az account list-locations -o table`"
+  description = "The Azure location you have been provided by your Contast Sales Engineer"
   default     = ""
 }
 

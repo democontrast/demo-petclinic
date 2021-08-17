@@ -1,6 +1,7 @@
 #Terraform `provider` section is required since the `azurerm` provider update to 2.0+
 provider "azurerm" {
   features {}
+  skip_provider_registration=true
 }
 
 #Extract the connection from the normal yaml file to pass to the app container
@@ -8,19 +9,13 @@ data "external" "yaml" {
   program = [var.python_binary, "${path.module}/parseyaml.py"]
 }
 
-#Set up a personal resource group for the SE local to them
-resource "azurerm_resource_group" "personal" {
-  name     = "Sales-Engineer-${var.initials}"
-  location = var.location
-}
-
 #Set up a container group 
 resource "azurerm_container_group" "app" {
-  name                = "${var.appname}-${var.initials}"
-  location            = azurerm_resource_group.personal.location
-  resource_group_name = azurerm_resource_group.personal.name
+  name                = "${var.appname}"
+  location            = var.location
+  resource_group_name = var.resourcegroup
   ip_address_type     = "public"
-  dns_name_label      = "${replace(var.appname, "/[^-0-9a-zA-Z]/", "-")}-${var.initials}"
+  dns_name_label      = "${replace(var.appname, "/[^-0-9a-zA-Z]/", "-")}"
   os_type             = "linux"
 
   container {
